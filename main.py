@@ -31,17 +31,22 @@ if uploaded_file is not None:
     # Aggiungi un selettore per scegliere la colonna da visualizzare
     feature_to_plot = st.selectbox("Seleziona una caratteristica da visualizzare:", data.columns)
 
-    # Crea un grafico a barre o un grafico di dispersione in base alla scelta dell'utente
-    if st.checkbox("Mostra un grafico a barre"):
-        st.subheader(f"Grafico a Barre per {feature_to_plot}")
-        st.write(data[feature_to_plot].value_counts())
-        plt.bar(data[feature_to_plot].value_counts().index, data[feature_to_plot].value_counts())
+    # Crea un grafico a torta o un grafico di dispersione in base alla scelta dell'utente
+    st.set_option('deprecation.showPyplotGlobalUse', False)
+    if st.checkbox("Mostra un grafico a torta"):
+        st.subheader(f"Grafico a Torta per {feature_to_plot}")
+        feature_counts = data[feature_to_plot].value_counts()
+        fig, ax = plt.subplots()
+        ax.pie(feature_counts, labels=feature_counts.index, autopct='%1.1f%%', startangle=90)
+        ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
         st.pyplot()
 
     if st.checkbox("Mostra un grafico di dispersione"):
         st.subheader("Grafico di Dispersione")
-        sns.scatterplot(data=data, x="sepal_length", y="sepal_width", hue="species")
-        st.pyplot()
+        fig, ax = plt.subplots()
+        sns.scatterplot(data=data, x="sepal_length", y="sepal_width", hue="species", ax=ax)
+        st.pyplot(fig)
+
 
     # Aggiungi una sezione per le statistiche dei dati
     st.header("Statistiche dei Dati")
