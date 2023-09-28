@@ -18,12 +18,6 @@ if uploaded_file is not None:
     # Leggi il file Excel in un DataFrame
     data = pd.read_excel(uploaded_file)
 
-    # Aggiungi una sezione per visualizzare i dati
-    st.header("Visualizzazione dei Dati")
-
-    # Mostra una tabella con i dati
-    st.write("Esempio dei primi 5 record dei dati:")
-    st.write(data.head())
 
     # Aggiungi una sezione per l'analisi dei dati
     st.header("Analisi dei Dati")
@@ -48,42 +42,24 @@ if uploaded_file is not None:
         st.pyplot(fig)
 
 
-    # Aggiungi una sezione per le statistiche dei dati
-    st.header("Statistiche dei Dati")
-    st.write("Statistiche di base del dataset:")
-    st.write(data.describe())
+ # Aggiungi una sezione per visualizzare i dati
+    st.header("Elaborazione dati")
 
-    # Aggiungi una sezione per il filtraggio dei dati
-    st.header("Filtraggio dei Dati")
-    species_filter = st.multiselect("Seleziona una o più specie:", data["species"].unique())
-    filtered_data = data[data["species"].isin(species_filter)]
+    # Utilizza st.text_input o st.text_area per consentire all'utente di inserire un prompt
+    user_input = st.text_area("Inserisci una richiesta di elaborazione dei dati:", "Esempio: Crea un grafico XYZ")
 
-    # Visualizza il dataset filtrato
-    st.write("Esempio dei primi 5 record dei dati filtrati:")
-    st.write(filtered_data.head())
+    # Verifica se l'utente ha inserito una richiesta
+if user_input:
+    st.subheader("Risultato dell'Elaborazione dei Dati")
 
-    # Aggiungi una sezione per il conteggio delle specie selezionate
-    st.header("Conteggio delle Specie")
-    st.write("Conteggio delle specie selezionate:")
-    st.write(filtered_data["species"].value_counts())
+    # Qui puoi analizzare il testo inserito dall'utente e generare il grafico in base alla richiesta
+    # Ad esempio, se l'utente ha inserito "Crea un grafico XYZ", puoi scrivere codice per creare il grafico XYZ.
 
-    # Aggiungi una sezione per l'istogramma delle caratteristiche
-    st.header("Istogramma delle Caratteristiche")
-    if st.checkbox("Mostra istogramma delle caratteristiche"):
-        st.subheader("Istogramma delle Caratteristiche")
-        for feature in data.columns[:-1]:
-            st.write(f"Istogramma per {feature}")
-            plt.hist(data[data['species'] == species_filter[0]][feature], alpha=0.5, label=species_filter[0], color='b')
-            plt.hist(data[data['species'] == species_filter[1]][feature], alpha=0.5, label=species_filter[1], color='r')
-            plt.xlabel(feature)
-            plt.ylabel("Count")
-            plt.legend(loc="upper right")
-            st.pyplot()
+    # Esempio di elaborazione dei dati (questo è solo un esempio, dovresti personalizzarlo in base alle richieste degli utenti)
+    if "grafico" in user_input.lower() and "xyz" in user_input.lower():
+        st.write("Ecco il grafico XYZ:")
+        # Inserire qui il codice per generare il grafico XYZ
+        
+    # Puoi aggiungere ulteriori condizioni per altre richieste
 
-    # Aggiungi una sezione per la correlazione tra le caratteristiche
-    st.header("Correlazione tra le Caratteristiche")
-    if st.checkbox("Mostra la matrice di correlazione"):
-        st.subheader("Matrice di Correlazione")
-        correlation_matrix = data.corr()
-        sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm")
-        st.pyplot()
+
